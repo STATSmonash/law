@@ -2,6 +2,8 @@ Statistics for Research in Law. This course will provide a hands-on introduction
 
 Presenter: Dr Ian Hunt, Monash Statistical Consulting Service (Data Science and AI Platform)
 
+To begin, please read the document above called MONASH_introduction.pdf.
+
 Session 1: 12.30pm-3.30pm 08 Oct
 
 Session 2: 9.30am-12.30pm 15 Oct
