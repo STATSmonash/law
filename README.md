@@ -9,7 +9,7 @@ Session 1
 
 https://monash.zoom.us/j/97054306443?pwd=N20xUlNMYjhJVThoQkp5TktJdmQ5dz09 
 
-Session 2
+<b>Session 2</b>
 9.30am-12.30pm 15 Oct
 
 https://monash.zoom.us/j/97054306443?pwd=N20xUlNMYjhJVThoQkp5TktJdmQ5dz09 
