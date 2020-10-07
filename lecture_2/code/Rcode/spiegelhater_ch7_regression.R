@@ -25,21 +25,21 @@ boot_predictions<-lapply(boot_regs,function(i){data.frame(y=xreg$y,yhat=cbind(1,
 
 colour_pink<-c("#E768AD")
 jit<-10 # jitter to expose double-ups .... but use base data for regression
-plot(jitter(x$Mother[isgirl],jit),jitter(x$Height[isgirl],jit),cex=.75,xlab="mother's height",ylab="daughter's height",pch=21,col=adjustcolor(colour_pink,alpha.f=.75),bg=adjustcolor(colour_p,alpha.f=.75))
-lines(xreg$x,predict(actual_reg),lty=1,col=1)
-
+plot(jitter(x$Mother[isgirl],jit),jitter(x$Height[isgirl],jit),cex=.75,xlab="mother's height",ylab="daughter's height",pch=21,col=adjustcolor(colour_pink,alpha.f=.75),bg=adjustcolor(colour_pink,alpha.f=.75))
 for(i in 1:length(boot_predictions)){
   bdata<-boot_predictions[[i]]
-  lines(xreg$x,bdata$yhat,col=adjustcolor("grey", alpha.f = 0.05))
+  lines(xreg$x,bdata$yhat,col=adjustcolor("grey", alpha.f = 0.1),lwd=2.5)
 }
+lines(xreg$x,predict(actual_reg),lty=1,col=1) # actual regression line for original sample
+
 
 
 
 ##### further exploration
 colour_blue<-c("#89CFF0")
 jit<-20 # jitter to expose double-ups .... but use base data for regression
-plot(c(min(x$Mother),max(x$Mother)),c(min(x$Height),max(x$Height)),xlab="kid's height",ylab="mother's height",col=0)
-points(jitter(x$Mother[isgirl],jit),jitter(x$Height[isgirl],jit),pch=21,col=adjustcolor(colour_pink,alpha.f=.75),bg=adjustcolor(colour_p,alpha.f=.75))
+plot(c(min(x$Mother),max(x$Mother)),c(min(x$Height),max(x$Height)),ylab="kid's height",xlab="mother's height",col=0)
+points(jitter(x$Mother[isgirl],jit),jitter(x$Height[isgirl],jit),pch=21,col=adjustcolor(colour_pink,alpha.f=.75),bg=adjustcolor(colour_pink,alpha.f=.75))
 points(jitter(x$Mother[!isgirl],jit),jitter(x$Height[!isgirl],jit),pch=21,col=adjustcolor(colour_blue,alpha.f=.75),bg=adjustcolor(colour_blue,alpha.f=.75))
 
 # now do for boys

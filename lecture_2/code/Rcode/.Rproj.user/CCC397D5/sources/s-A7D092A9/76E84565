@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1602029345350.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "76E84565",
+    "lastKnownWriteTime" : 1602030850,
+    "last_content_update" : 1602030850594,
+    "path" : "~/111_courses/law/notes_part_2/code/Rcode/anscombe_data.R",
+    "project_path" : "anscombe_data.R",
+    "properties" : {
+        "cursorPosition" : "48,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
