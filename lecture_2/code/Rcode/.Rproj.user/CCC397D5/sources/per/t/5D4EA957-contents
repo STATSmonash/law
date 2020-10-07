@@ -51,6 +51,6 @@ boot_samples<-lapply(1:ncol(boot_picks),function(i){xreg2[boot_picks[,i],]})
 boot_regs2<-lapply(boot_samples,function(i){lm(i$y~i$x)})
 boot_predictions2<-lapply(boot_regs2,function(i){data.frame(y=xreg2$y,yhat=cbind(1,xreg2$x)%*%as.matrix(i$coe))})
 
-lapply(boot_predictions,function(i){lines(xreg$x,i$yhat,col=adjustcolor("grey", alpha.f = 0.05))})
-lapply(boot_predictions2,function(i){lines(xreg2$x,i$yhat,col=adjustcolor("grey", alpha.f = 0.05))})
+dum<-lapply(boot_predictions,function(i){lines(xreg$x,i$yhat,col=adjustcolor("grey", alpha.f = 0.05))})
+dum2<-lapply(boot_predictions2,function(i){lines(xreg2$x,i$yhat,col=adjustcolor("grey", alpha.f = 0.05))})
 
