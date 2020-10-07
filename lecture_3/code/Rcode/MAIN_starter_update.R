@@ -64,24 +64,35 @@ cbind(x_nums,x_facts,x_facts_two)
 ############################################################################################
 
 x_sum<-fsum_grid(x[,x_nums])
-write.csv(x_sum$table,"data_summary.CSV")
+write.table(x_sum$table,"data_summary.CSV",sep=",",col.names = NA)
+#write(rbind("",x_sum$blurb),file="data_summary.CSV",append=TRUE)
+write.table(c("",x_sum$blur),file=paste0("data_summary.CSV") , append = TRUE,  sep=',', row.names=F, col.names=F )
 
 x_cor<-cor(x[,x_nums],use="pairwise.complete.obs")
 x_cor_spearman<-cor(x[,x_nums],use="pairwise.complete.obs",method="spearman")
 
 # p-values: need to do a loop over all columns vs all columns!
 xdo<-x[,x_nums]
-x_cor_test<-matrix(NA,nrow=ncol(xdo),ncol=ncol(xdo))
+x_cor_test<-matrix(NA,nrow=ncol(xdo),ncol=ncol(xdo)) 
 dimnames(x_cor_test)<-list(colnames(xdo),colnames(xdo))
+x_cor_test_spearman<-x_cor_test
 for(i in 1:ncol(xdo)){
   for(ii in 1:ncol(xdo)){
     x_cor_test[ii,i]<-cor.test(xdo[,ii],xdo[,i],use="pairwise.complete.obs",method="pearson")$p.value
-  }
+    x_cor_test_spearman[ii,i]<-cor.test(xdo[,ii],xdo[,i],use="pairwise.complete.obs",exact=FALSE,method="spearman")$p.value
+    }
 }
 
-write.csv(x_cor,file="data_correlations.CSV")
+write(cbind("Pearson Correlations"),file="data_correlations.CSV")
+write.table(x_cor,file="data_correlations.CSV",append=TRUE,sep=",",col.names = NA)
 write(cbind("","p-values"),file="data_correlations.CSV",append=TRUE)
 write.table(x_cor_test,file="data_correlations.CSV",append=TRUE,sep=",",col.names = NA)
+
+write(rbind("","Spearman Correlations"),file="data_correlations.CSV",append=TRUE)
+write.table(x_cor_spearman,file="data_correlations.CSV",append=TRUE,sep=",",col.names = NA)
+write(cbind("","p-values"),file="data_correlations.CSV",append=TRUE)
+write.table(x_cor_test_spearman,file="data_correlations.CSV",append=TRUE,sep=",",col.names = NA)
+
 
 
 ############################################################################################
@@ -144,12 +155,38 @@ for(i in 1:length(ct_list)){
 
 
 
-
 ############################################################################################
 ##  Charts
 ############################################################################################
-pairs(x[,x_nums])
+x_plot<-x[,x_nums]
+chart_folder<-"CHART_"
 
+
+cname<-"scatter_plots"
+csize<-c(10,10)*1.25
+pdf(paste0(chart_folder,cname,".pdf"),height=csize[1],width=csize[2])
+  pairs(x_plot)
+dev.off()
+
+
+csize<-c(5,5)
+cname<-"histograms"
+pdf(paste0(chart_folder,cname,".pdf"),height=csize[1],width=csize[2])
+  par(mfrow=c(1,1))
+  for(i in 1:ncol(x_plot)){
+    hist(x_plot[,i],main=colnames(x_plot)[i],xlab=NA)
+  }
+dev.off()
+
+cname<-"qqplots"
+pdf(paste0(chart_folder,cname,".pdf"),height=csize[1],width=csize[2])
+par(mfrow=c(1,1))
+for(i in 1:ncol(x_plot)){
+  qqnorm(x_plot[,i],main=paste0(colnames(x_plot)[i]))
+  qqline(x_plot[,i])
+  title(main="qqplot with N(0,1): the straighter the line the more normal the data",cex.main=.65,line=.75,font.main=1)
+}
+dev.off()
 
 ############################################################################################
 ##  Misc aggregations
@@ -216,8 +253,9 @@ use_cols_reg<-c("LOG_dur_mths","dur_mths","dh_no","no_pl_affis","regdate_to_comm
 x_missing<-apply(x[,colnames(x)%in%use_cols_reg],1,function(i){any(is.na(i))})
 x_no_na<-x[!x_missing,colnames(x)%in%use_cols_reg]
 x_no_na<-cbind(x_no_na, RANK_dh_no=rank(x_no_na$dh_no),RANK_no_pl_affis=rank(x_no_na$no_pl_affis))
+#x_no_na<-x_no_na[!x_no_na$dur_mths==0,]
 
-mod1<-lm(LOG_dur_mths ~ dh_no, data = x_no_na)
+mod1<-lm(dur_mths ~ dh_no, data = x_no_na)
 #mod2<-lm(LOG_dur_mths ~ log(dh_no+.01)+log(no_pl_affis+.01), data = x_no_na)
 mod2<-update(mod1,~.+RANK_no_pl_affis+LOG_regdate_to_commencement_mths)
 mod3<-update(mod2,~.+time_to_med+no_dirs_case_start+year)
