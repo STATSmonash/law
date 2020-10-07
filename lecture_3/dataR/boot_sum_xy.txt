@@ -1,0 +1,8 @@
+\begin{tabularx}{\textwidth}{lZZ} \toprule  & bootstrap X & bootstrap Y \\ \midrule
+n  & 10000 & 10000 \\
+mean  &     0.894 &     0.419 \\
+sd  &     0.182 &     0.624 \\
+var  &     0.033 &     0.389 \\
+quantile .025  &     0.518 &    -0.860 \\
+quantile .975  &     1.218 &     1.546 \\
+\bottomrule \end{tabularx}

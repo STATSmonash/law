@@ -1,0 +1,11 @@
+\begin{tabularx}{\textwidth}{lZZ} \toprule  & X & Y \\ \midrule
+n  & 10.00 & 15.00 \\
+sample mean  &  0.90 &  0.42 \\
+hypothesised mean  &  0.00 &  0.00 \\
+mean sd  &  0.19 &  0.64 \\
+t-stat  &  4.67 &  0.66 \\
+p-value  &  0.00 &  0.52 \\
+95\% CI lower  &  0.46 & -0.96 \\
+95\% CI upper  &  1.33 &  1.80 \\
+t(n-1) quantile .975  &  2.26 &  2.14 \\
+\bottomrule \end{tabularx}

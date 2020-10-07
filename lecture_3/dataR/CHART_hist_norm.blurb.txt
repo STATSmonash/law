@@ -1,0 +1,1 @@
+Histogram of 10000 bootstrap re-sampled means of X (each new sample has $n$=10).  The curve is a normal distribution with the same mean and variance as the histogram data.\endinput
