@@ -293,7 +293,7 @@ anova(mod1,mod2,mod3,mod4,mod5,mod6,test="LRT")
 summary.glm(mod3)
 #exp(-1.38450+c(-1,1)*qnorm(.975)*0.45419)
 
-y_fit<-predict(mod3,type='response')
+y_fit<-predict(mod6,type='response')
 
 data_box<-split(y_fit,x_no_na$reg_binary)
 boxplot(data_box,outline=FALSE,names=NA,axes=FALSE)

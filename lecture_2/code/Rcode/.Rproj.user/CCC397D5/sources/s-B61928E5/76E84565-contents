@@ -4,8 +4,14 @@ colour_p<-c("#E768AD")
 
 x<-anscombe[,1:4]
 y<-anscombe[,5:8]
-xy<-lapply(1:4,function(i){data.frame(x=x[,i],y=y[,i])})
+xy<-lapply(1:4,function(i){data.frame(dataset=LETTERS[i],x=x[,i],y=y[,i])})
 names(xy)<-LETTERS[1:length(xy)]
+
+
+# write out some files with the base data
+#for(i in 1:length(xy)){write.csv(xy[[i]],paste0("anscombe_",names(xy)[i],".CSV"),row.names = FALSE)}
+combo<-do.call(rbind, xy)
+write.csv(combo,paste0("anscombe_data.CSV"),row.names = FALSE)
 
 fsum_mini<-function(x){
     out<-c(mean(x),sd(x))

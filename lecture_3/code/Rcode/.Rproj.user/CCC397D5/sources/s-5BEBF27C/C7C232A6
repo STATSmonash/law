@@ -5,7 +5,7 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "3197692648",
+    "hash" : "0",
     "id" : "C7C232A6",
     "lastKnownWriteTime" : 1602035559,
     "last_content_update" : 1602035559232,
@@ -13,7 +13,7 @@
     "project_path" : "functions/fsum.R",
     "properties" : {
         "cursorPosition" : "92,0",
-        "scrollLine" : "26"
+        "scrollLine" : "0"
     },
     "relative_order" : 4,
     "source_on_save" : false,
