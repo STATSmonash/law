@@ -1,9 +1,0 @@
-"","bootstrap samples","theoretical"
-"n",10000,NA
-"mean",0.89429588,NA
-"sd",0.181579024816334,0.191835878928954
-"var",0.0329709422532509,0.0368010044444444
-"quantile .025",0.5175975,NA
-"quantile .975",1.2178025,NA
-""
-"Statistical summary of the bootstrap samples for $X$.  The theoretical values assume the central limit theorem applies."

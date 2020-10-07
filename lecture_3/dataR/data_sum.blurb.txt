@@ -1,1 +1,0 @@
-Summary statistics for $X$ and $Y$.  The first row, $n$, denotes sample size.  Quantiles are the same as percentiles (e.g. the .5 quantile is the median).\endinput

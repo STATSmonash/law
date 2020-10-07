@@ -1,1 +1,0 @@
-Statistical summary of the bootstrap samples for $X$.  The theoretical values assume the central limit theorem applies.\endinput

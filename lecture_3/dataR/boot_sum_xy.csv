@@ -1,9 +1,0 @@
-"","bootstrap X","bootstrap Y"
-"n",10000,10000
-"mean",0.89429588,0.41918218
-"sd",0.181579024816334,0.623575337089001
-"var",0.0329709422532509,0.388846201025661
-"quantile .025",0.5175975,-0.859853333333333
-"quantile .975",1.2178025,1.545985
-""
-"Bootstrap sample summaries and implied confidence intervals."

@@ -1,1 +1,0 @@
-Bootstrap sample summaries and implied confidence intervals.\endinput

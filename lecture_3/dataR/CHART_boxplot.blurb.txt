@@ -1,1 +1,0 @@
-$X$ and $Y$ data.  The central box covers the inter-quartile range (the middle 50\% of observations) and marks the median (the thick line).  Outliers are at least 1.5 times the length of inter-quartile range (which is delimited by dotted lines).\endinput

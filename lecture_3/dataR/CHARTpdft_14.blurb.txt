@@ -1,1 +1,0 @@
-A t-distribution with,14 or $ `(n-1)',$ degress of freedom.  The shaded area (95\%) defines the cut-offs for what counts as `extreme'.\endinput

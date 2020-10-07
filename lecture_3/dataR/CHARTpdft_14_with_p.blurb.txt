@@ -1,1 +1,0 @@
-The p-value for the test on $Y$ is 0.521.  This is $2(1-0.74$).\endinput
