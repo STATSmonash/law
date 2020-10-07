@@ -50,6 +50,10 @@ View(x)
 x$LOG_regdate_to_commencement_mths<-log(x$regdate_to_commencement_mths)
 x$LOG_dur_mths<-log(x$dur_mths)
 x$LOG_dur_mths[is.infinite(x$LOG_dur_mths)]<-0
+x$LOG_time_to_med<-log(x$time_to_med)
+x$LOG_time_to_med[is.infinite(x$LOG_time_to_med)]<-0
+x$LOG_time_to_med[is.na(x$LOG_time_to_med)]<-0
+
 
 # create logical vectors of the numeric and factor columns
 x_nums<-sapply(x, is.numeric)
@@ -249,21 +253,22 @@ for(i in 1:length(out_t_format)){
 ############################################################################################
 use_cols_reg<-c("LOG_dur_mths","dur_mths","dh_no","no_pl_affis","regdate_to_commencement_mths","LOG_regdate_to_commencement_mths"
                 ,"family_context","dh_5_bin","dirs_bin","no_dirs_case_start"
-                ,"time_to_med","majsh","year")
+                ,"LOG_time_to_med","majsh","year")
 x_missing<-apply(x[,colnames(x)%in%use_cols_reg],1,function(i){any(is.na(i))})
 x_no_na<-x[!x_missing,colnames(x)%in%use_cols_reg]
 x_no_na<-cbind(x_no_na, RANK_dh_no=rank(x_no_na$dh_no),RANK_no_pl_affis=rank(x_no_na$no_pl_affis))
 #x_no_na<-x_no_na[!x_no_na$dur_mths==0,]
 
-mod1<-lm(dur_mths ~ dh_no, data = x_no_na)
+#mod0<-lm(LOG_dur_mths ~ poly(dh_no,1), data = x_no_na)
+mod1<-lm(LOG_dur_mths ~ RANK_dh_no, data = x_no_na)
 #mod2<-lm(LOG_dur_mths ~ log(dh_no+.01)+log(no_pl_affis+.01), data = x_no_na)
-mod2<-update(mod1,~.+RANK_no_pl_affis+LOG_regdate_to_commencement_mths)
-mod3<-update(mod2,~.+time_to_med+no_dirs_case_start+year)
+mod2<-update(mod1,~.+RANK_no_pl_affis+LOG_time_to_med)
+mod3<-update(mod2,~.+LOG_regdate_to_commencement_mths)
+mod4<-update(mod3,~.+dh_5_bin*family_context) 
+anova(mod1,mod2,mod3,mod4)
 
-anova(mod1,mod2,mod3)
 summary(mod3)
-
-anova(mod3)
+anova(mod4)
 
 mod_choose<-mod3
 res<-mod_choose$residuals
@@ -290,10 +295,10 @@ mod5<-glm(reg_binary ~ no_dirs_case_start+LOG_regdate_to_commencement_mths+year+
 mod6<-update(mod5,~.+rank(time_to_med))
   
 anova(mod1,mod2,mod3,mod4,mod5,mod6,test="LRT")
-summary.glm(mod3)
+summary.glm(mod4)
 #exp(-1.38450+c(-1,1)*qnorm(.975)*0.45419)
 
-y_fit<-predict(mod6,type='response')
+y_fit<-predict(mod4,type='response')
 
 data_box<-split(y_fit,x_no_na$reg_binary)
 boxplot(data_box,outline=FALSE,names=NA,axes=FALSE)
