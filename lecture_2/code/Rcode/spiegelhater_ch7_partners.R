@@ -1,6 +1,5 @@
 cat("\014")  # clean console window
 rm(list=ls(pos=.GlobalEnv), pos=.GlobalEnv) # remove all variables and start again :)
-#if(!require(tigerstats)) {install.packages("tigerstats"); require(tigerstats)}
 
 # get file from Spiegalhalter's book website
 fname<-"https://raw.githubusercontent.com/dspiegel29/ArtofStatistics/master/07-1-2-3-distributions-of-partners%2Bbootstrap/7-1%20datasnatch.csv"

@@ -1,60 +1,56 @@
 cat("\014")  # clean console window
 rm(list=ls(pos=.GlobalEnv), pos=.GlobalEnv) # remove all variables and start again :)
-#if(!require(tigerstats)) {install.packages("tigerstats"); require(tigerstats)}
 
 # get file from Spiegalhalter's book website
-fname<-"https://raw.githubusercontent.com/dspiegel29/ArtofStatistics/master/07-1-2-3-distributions-of-partners%2Bbootstrap/7-1%20datasnatch.csv"
-new_csv_name<-"partners_raw.csv"
+fname<-"https://raw.githubusercontent.com/dspiegel29/ArtofStatistics/master/07-4-mother-daughter-bootstrap/07-4-galton-x.csv"
+new_csv_name<-"galton.csv"
 download.file(fname, destfile = new_csv_name) #, method = "curl")
-temp_raw<-read.csv(file="partners_raw.csv",check.names = FALSE)  # upload from clean CSV file
-temp<-temp_raw[temp_raw$size=="N=760",]
-write.table(temp_raw)
+temp<-read.csv(file=new_csv_name,check.names = FALSE)  # upload from clean CSV file
 
-temp # not in the right format
+x<-temp
+isgirl<-x$Gender=="F"
+str(temp)
 
-# so recreate the original dataset from the count table
-x_short<-data.frame(partners=temp$partners,count=as.numeric(round(temp$count*760,0)))
-x<-data.frame(partners=unlist(apply(x_short,1,function(i){rep(i[1],i[2])})),row.names=NULL)
+# make a separate matrix for the regression ...
+nboot<-250
+xreg<-data.frame(y=x$Height[isgirl],x=x$Mother[isgirl])
+dim(xreg)
 
-# check out the data (just like the results of real survey)
-dim(x) # should say 760 rows and 1 column
+actual_reg<-lm(xreg$y~xreg$x)
 
-par(mfrow=c(1,2)) # makes two plots, side by side
-hbins<-seq(-1,51,1) # bins for histogram (to match book - a bar for each integer (zeros as well))
-hist(x$partners,breaks=hbins,main=NA,xlab="number of partners") # should look like the book page 193, last chart.
-qqnorm(x$partners,main="qqplot with N(0,1)");qqline(x$partners);
-title(main="the straighter the line the more normal the data",cex.main=.65,line=.75,font.main=1)
+boot_picks<-matrix(sample(1:nrow(xreg),nrow(xreg)*nboot,replace=TRUE),ncol=nboot)
+boot_samples<-lapply(1:ncol(boot_picks),function(i){xreg[boot_picks[,i],]})
+boot_regs<-lapply(boot_samples,function(i){lm(i$y~i$x)})
+boot_predictions<-lapply(boot_regs,function(i){data.frame(y=xreg$y,yhat=cbind(1,xreg$x)%*%as.matrix(i$coe))})
+
+colour_pink<-c("#E768AD")
+jit<-10 # jitter to expose double-ups .... but use base data for regression
+plot(jitter(x$Mother[isgirl],jit),jitter(x$Height[isgirl],jit),cex=.75,xlab="mother's height",ylab="daughter's height",pch=21,col=adjustcolor(colour_pink,alpha.f=.75),bg=adjustcolor(colour_p,alpha.f=.75))
+lines(xreg$x,predict(actual_reg),lty=1,col=1)
+
+for(i in 1:length(boot_predictions)){
+  bdata<-boot_predictions[[i]]
+  lines(xreg$x,bdata$yhat,col=adjustcolor("grey", alpha.f = 0.05))
+}
 
 
-###################################################
-###  bootstrap means
-###################################################
 
-## main idea is to resample from the rows (1:nrow(x)) of x many times ---> then use these index numbers to point to the data and make new bootstrap-samples.
-nboot<-1000 # number of bootstrap samples to take
-nsamp<-25
+##### further exploration
+colour_blue<-c("#89CFF0")
+jit<-20 # jitter to expose double-ups .... but use base data for regression
+plot(c(min(x$Mother),max(x$Mother)),c(min(x$Height),max(x$Height)),xlab="kid's height",ylab="mother's height",col=0)
+points(jitter(x$Mother[isgirl],jit),jitter(x$Height[isgirl],jit),pch=21,col=adjustcolor(colour_pink,alpha.f=.75),bg=adjustcolor(colour_p,alpha.f=.75))
+points(jitter(x$Mother[!isgirl],jit),jitter(x$Height[!isgirl],jit),pch=21,col=adjustcolor(colour_blue,alpha.f=.75),bg=adjustcolor(colour_blue,alpha.f=.75))
 
-# example:  
-sample(1:nrow(x),nsamp,replace = TRUE)
+# now do for boys
+xreg2<-data.frame(y=x$Height[!isgirl],x=x$Mother[!isgirl])
+actual_reg<-lm(xreg2$y~xreg2$x)
 
-# example with nboot columns ...
-boot_index<-matrix(sample(1:nrow(x),nsamp*nboot,replace = TRUE),ncol=nboot)
-dim(boot_index) # should be nsamp rows (of index numbers) and nboot columns
-boot_index[,1:2] # first two columns
+boot_picks<-matrix(sample(1:nrow(xreg2),nrow(xreg2)*nboot,replace=TRUE),ncol=nboot)
+boot_samples<-lapply(1:ncol(boot_picks),function(i){xreg2[boot_picks[,i],]})
+boot_regs2<-lapply(boot_samples,function(i){lm(i$y~i$x)})
+boot_predictions2<-lapply(boot_regs2,function(i){data.frame(y=xreg2$y,yhat=cbind(1,xreg2$x)%*%as.matrix(i$coe))})
 
-boot_samples<-apply(boot_index,2,function(i){x[i,1]})
-dim(boot_samples) # should be nsamp rows (of randomly selected partner data) and nboot columns
-boot_samples[,1:2]# first two columns
-
-# now take means and plot
-par(mfrow=c(1,2)) # makes two plots, side by side
-boot_means<-apply(boot_samples,2,mean)
-hbins<-c(seq(-1,max(30,max(boot_means)+1),1))
-hist(boot_means,breaks=hbins,include.lowest=TRUE,main=paste0("N=",nsamp),ylim=c(0, nboot*.6),xlab=paste0(nboot," bootstrap means"))
-lines(c(mean(x[,1]),mean(x[,1])),c(0, nboot*.6),lty=2) # line for true mean
-title(main=paste0("true mean=",mean(x[,1])),cex.main=.65,line=.75,font.main=1)
-
-qqnorm(boot_means,main="qqplot with N(0,1)");qqline(boot_means);
-title(main="the straighter the line the more normal the data",cex.main=.65,line=.75,font.main=1)
-
+lapply(boot_predictions,function(i){lines(xreg$x,i$yhat,col=adjustcolor("grey", alpha.f = 0.05))})
+lapply(boot_predictions2,function(i){lines(xreg2$x,i$yhat,col=adjustcolor("grey", alpha.f = 0.05))})
 
