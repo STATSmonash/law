@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1602026791894.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2126618078",
+    "id" : "10F27476",
+    "lastKnownWriteTime" : 1602026819,
+    "last_content_update" : 1602026819739,
+    "path" : "~/111_courses/law/notes_part_2/code/Rcode/spiegelhater_ch7_partners.R",
+    "project_path" : "spiegelhater_ch7_partners.R",
+    "properties" : {
+        "cursorPosition" : "10,0",
+        "scrollLine" : "10"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
