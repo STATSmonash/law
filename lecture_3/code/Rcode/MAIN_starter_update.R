@@ -3,6 +3,8 @@ rm(list=ls(pos=.GlobalEnv), pos=.GlobalEnv) # remove all variables and start aga
 
 function_files<-paste0("source('functions//",list.files(path="functions//",pattern="^f.*.R$"),"', encoding='utf-8')")
 for(i in function_files){ eval(parse(text=i)) }
+colour_p<-c("#E768AD")
+
 
 # read in raw file, formated with columns set by a tab
 temp<-read.csv(file="law_data_input_TAB_update.txt",check.names = FALSE,sep="\t")  # upload from clean file tab delimited (\t)
@@ -53,6 +55,7 @@ x$LOG_dur_mths[is.infinite(x$LOG_dur_mths)]<-0
 x$LOG_time_to_med<-log(x$time_to_med)
 x$LOG_time_to_med[is.infinite(x$LOG_time_to_med)]<-0
 x$LOG_time_to_med[is.na(x$LOG_time_to_med)]<-0
+x$LOG_time_to_med[is.na(x$time_to_med)]<-NA
 
 
 # create logical vectors of the numeric and factor columns
@@ -68,7 +71,7 @@ cbind(x_nums,x_facts,x_facts_two)
 ############################################################################################
 
 x_sum<-fsum_grid(x[,x_nums])
-write.table(x_sum$table,"data_summary.CSV",sep=",",col.names = NA)
+write.table(x_sum$table,"data_summary_statistics.CSV",sep=",",col.names = NA)
 #write(rbind("",x_sum$blurb),file="data_summary.CSV",append=TRUE)
 write.table(c("",x_sum$blur),file=paste0("data_summary.CSV") , append = TRUE,  sep=',', row.names=F, col.names=F )
 
@@ -109,8 +112,7 @@ fodds_ratio<-function(x,alpha=.05){
   p1<-n11/(n11+n21)
   p2<-n12/(n12+n22)
   OR_hat<-(p1/(1-p1))/(p2/(1-p2))
-  OR_hat
-  (n11/n21)/(n12/n22)
+  #OR_hat - (n11/n21)/(n12/n22)
   
   sigma_hat<-sqrt(1/n11+1/n21+1/n12+1/n22)
   CI<-exp(log(OR_hat)+qnorm(1-alpha/2)*sigma_hat*c(-1,1))
@@ -133,12 +135,26 @@ ct_pairs<-lapply(1:nrow(ct_pairs_mat),function(i){ct_pairs_mat[i,]})
 ct_list<-lapply(ct_pairs,function(i){ftable(xtabs(~.,data=x_temp[,i]))})
 names(ct_list)<-unlist(lapply(ct_list,function(i){paste( names(attr(i,"row.vars")), "vs", names(attr(i,"col.vars")))}))
 ct_chisq<-lapply(ct_list,function(i){chisq.test(i,correct=FALSE)})
+ct_chisq_correction<-lapply(ct_list,function(i){chisq.test(i,correct=TRUE)})
+ct_fisher_exact<-lapply(ct_list,function(i){fisher.test(i,simulate.p.value=TRUE)})
 ct_odds_ratio<-lapply(ct_list,function(i){fodds_ratio(i)})
 
 out_tab_sum<-data.frame(t(sapply(ct_pairs,function(i){colnames(x_temp)[i]})),as.matrix(sapply(ct_chisq,function(i){i$p.value})))
-colnames(out_tab_sum)<-c("row","col","chisq p-value")
+colnames(out_tab_sum)<-c("row","col","chisq p-value (no correction)")
+
+out_tab_sum_correction<-data.frame(t(sapply(ct_pairs,function(i){colnames(x_temp)[i]})),as.matrix(sapply(ct_chisq_correction,function(i){i$p.value})))
+colnames(out_tab_sum_correction)<-c("row","col","chisq p-value (with correction)")
+
+out_tab_sum_fisher<-data.frame(t(sapply(ct_pairs,function(i){colnames(x_temp)[i]})),as.matrix(sapply(ct_fisher_exact,function(i){i$p.value})))
+colnames(out_tab_sum_fisher)<-c("row","col","fisher exact p-value (simulated)")
+
 out_or_sum<-t(sapply(ct_odds_ratio,function(i){i})) ; colnames(out_or_sum)<-colnames(ct_odds_ratio[[1]])
-if( all(rownames(out_tab_sum)==rownames(out_or_sum)) ) { out_sum<-cbind(out_tab_sum,out_or_sum)} else {out_sum<-NULL}
+if( all(rownames(out_tab_sum)==rownames(out_or_sum)) ) { 
+  out_sum<-cbind(out_tab_sum,out_or_sum,out_tab_sum_fisher[,3])
+  colnames(out_sum)[ncol(out_sum)]<-colnames(out_tab_sum_fisher)[3]
+  out_sum<-cbind(out_sum,out_tab_sum_correction[,3])
+  colnames(out_sum)[ncol(out_sum)]<-colnames(out_tab_sum_correction)[3]
+  } else {out_sum<-NULL}
 
 ct_out_name<-"contingency_tables_SUMMARY.CSV"
 write.table(out_sum,file=ct_out_name, append=FALSE,col.names = NA,sep=",",row.names=TRUE)
@@ -147,10 +163,10 @@ ct_out_name<-"contingency_tables.CSV"
 for(i in 1:length(ct_list)){
   ct_do<-ct_list[[i]]
   tab_name<-names(ct_list)[i]
-  write.table(rbind("",tab_name),file=ct_out_name, append=i>1,col.names = FALSE,row.names=FALSE,sep=",")
-  write.table(as.matrix(ct_do),file=ct_out_name, append=TRUE,col.names = NA,sep=",",row.names=TRUE)
-  write.table(data.frame("Chi-sq p-value",ct_chisq[[i]]$p.value),col.names = FALSE,file=ct_out_name, append=TRUE,sep=",",row.names=FALSE)
-  write.table(ct_odds_ratio[[i]],file=ct_out_name, append=TRUE,col.names = TRUE,sep=",",row.names=FALSE)
+  suppressWarnings( write.table(rbind("",tab_name),file=ct_out_name, append=i>1,col.names = FALSE,row.names=FALSE,sep=",") )
+  suppressWarnings( write.table(as.matrix(ct_do),file=ct_out_name, append=TRUE,col.names = NA,sep=",",row.names=TRUE) )
+  suppressWarnings( write.table(data.frame("Chi-sq p-value (no correction)",ct_chisq[[i]]$p.value),col.names = FALSE,file=ct_out_name, append=TRUE,sep=",",row.names=FALSE) )
+  suppressWarnings( write.table(ct_odds_ratio[[i]],file=ct_out_name, append=TRUE,col.names = TRUE,sep=",",row.names=FALSE) )
   #write.table(test_results,file=ct_out_name, append=TRUE,col.names = NA,sep=",",row.names=TRUE)
   #write.table(ct_chisq[[i]]$expected,col.names = FALSE,file=ct_out_name, append=TRUE,sep=",",row.names=FALSE)
 }
@@ -186,7 +202,7 @@ cname<-"qqplots"
 pdf(paste0(chart_folder,cname,".pdf"),height=csize[1],width=csize[2])
 par(mfrow=c(1,1))
 for(i in 1:ncol(x_plot)){
-  qqnorm(x_plot[,i],main=paste0(colnames(x_plot)[i]))
+  qqnorm(x_plot[,i],main=paste0(colnames(x_plot)[i]),xlab="N(0,1) quantiles",ylab=paste0(colnames(x_plot)[i]," quantiles"))
   qqline(x_plot[,i])
   title(main="qqplot with N(0,1): the straighter the line the more normal the data",cex.main=.65,line=.75,font.main=1)
 }
@@ -247,13 +263,38 @@ for(i in 1:length(out_t_format)){
 }
 
 
+############################################################################################
+##  boxplots for categorical factors
+############################################################################################
+
+
+cname<-"boxplots"
+pdf(paste0(chart_folder,cname,".pdf"),height=csize[1],width=csize[2])
+par(mfrow=c(1,1))
+for(i in 1:sum(x_facts)){
+  xx<-x[,which(x_nums)]
+  xfact<-as.matrix(x[,which(x_facts)][,i])
+  colnames(xfact)<-colnames(x)[which(x_facts)][i]
+  
+  #data_box<-split(xx,xfact);
+  for(ii in 1:ncol(xx)){
+    data_box<-split(xx[,ii],xfact)
+    #boxplot(data_box,outline=FALSE,names=NA,axes=FALSE)
+    stripchart(data_box, jitter = .1 , method = "jitter",vertical = TRUE,col=0,xlab=NULL,cex.axis=1,axes=TRUE)
+    boxplot(data_box,outline=FALSE,add=TRUE,names=NA,axes=FALSE,boxwex=0.25)
+    stripchart(data_box,jitter = .1 , method = "jitter",pch=16,cex=1.5, col=adjustcolor(colour_p, alpha.f = 0.3),vertical = TRUE,add=TRUE,axes=FALSE)
+    title(ylab=colnames(xx)[ii])
+  }
+}
+dev.off()
+
 
 ############################################################################################
 ##  MODELS - continuous y-variable
 ############################################################################################
 use_cols_reg<-c("LOG_dur_mths","dur_mths","dh_no","no_pl_affis","regdate_to_commencement_mths","LOG_regdate_to_commencement_mths"
                 ,"family_context","dh_5_bin","dirs_bin","no_dirs_case_start"
-                ,"LOG_time_to_med","majsh","year")
+                ,"majsh","year","gender_pl") #,"LOG_time_to_med"
 x_missing<-apply(x[,colnames(x)%in%use_cols_reg],1,function(i){any(is.na(i))})
 x_no_na<-x[!x_missing,colnames(x)%in%use_cols_reg]
 x_no_na<-cbind(x_no_na, RANK_dh_no=rank(x_no_na$dh_no),RANK_no_pl_affis=rank(x_no_na$no_pl_affis))
@@ -262,12 +303,12 @@ x_no_na<-cbind(x_no_na, RANK_dh_no=rank(x_no_na$dh_no),RANK_no_pl_affis=rank(x_n
 #mod0<-lm(LOG_dur_mths ~ poly(dh_no,1), data = x_no_na)
 mod1<-lm(LOG_dur_mths ~ RANK_dh_no, data = x_no_na)
 #mod2<-lm(LOG_dur_mths ~ log(dh_no+.01)+log(no_pl_affis+.01), data = x_no_na)
-mod2<-update(mod1,~.+RANK_no_pl_affis+LOG_time_to_med)
+mod2<-update(mod1,~.+RANK_no_pl_affis) #LOG_time_to_med
 mod3<-update(mod2,~.+LOG_regdate_to_commencement_mths)
-mod4<-update(mod3,~.+dh_5_bin*family_context) 
+mod4<-update(mod3,~.+LOG_regdate_to_commencement_mths*family_context*gender_pl+RANK_no_pl_affis*gender_pl+RANK_dh_no*gender_pl) #+LOG_time_to_med 
 anova(mod1,mod2,mod3,mod4)
 
-summary(mod3)
+summary(mod4)
 anova(mod4)
 
 mod_choose<-mod3
@@ -281,7 +322,6 @@ qqnorm(res);qqline(res)
 ############################################################################################
 ##  MODELS - binary y-variable
 ############################################################################################
-colour_p<-c("#E768AD")
 
 use_cols_reg<-c("reg_binary","no_dirs_case_start","LOG_regdate_to_commencement_mths","year","gender_pl","rel_s461","majsh","time_to_med")
 x_missing<-apply(x[,colnames(x)%in%use_cols_reg],1,function(i){any(is.na(i))})
@@ -311,7 +351,7 @@ xx<-table(data.frame(x_no_na$reg_binary,y_fit>.25))
 1-xx[2,2]/(xx[2,1]+xx[2,2]) # 1- sensitivity
 xx[1,1]/(xx[1,1]+xx[1,2]) # specificity
 
-#page 177 in hosmer 2013 chapter 6 in Spegielhalter.
+#page 177 in hosmer 2013 and chapter 6 in Spegielhalter.
 y_fit1<-predict(mod2,type='response')
 out_roc1<-froc(x_no_na$reg_binary,y_fit1)
 out_roc1<-froc(x_no_na$reg_binary,y_fit1)

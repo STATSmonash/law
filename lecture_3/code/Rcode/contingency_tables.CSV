@@ -3,7 +3,7 @@
 "","recent share trade","no recent share trade"
 "deregistered",18,63
 "registered",26,85
-"Chi-sq p-value",0.84494288724464
+"Chi-sq p-value (no correction)",0.84494288724464
 "OR","0.95CI_low","0.95CI_up"
 0.934065934065934,0.471505233978142,1.85041247966913
 ""
@@ -11,7 +11,7 @@
 "","judgment","settled"
 "deregistered",5,77
 "registered",12,99
-"Chi-sq p-value",0.253431468100389
+"Chi-sq p-value (no correction)",0.253431468100389
 "OR","0.95CI_low","0.95CI_up"
 0.535714285714286,0.181028822786124,1.58532653254576
 ""
@@ -19,7 +19,7 @@
 "","not-family","family"
 "deregistered",40,33
 "registered",70,36
-"Chi-sq p-value",0.128804103121932
+"Chi-sq p-value (no correction)",0.128804103121932
 "OR","0.95CI_low","0.95CI_up"
 0.623376623376623,0.338177656018339,1.14909547587428
 ""
@@ -27,7 +27,7 @@
 "","parallel order","no parallel order"
 "deregistered",26,56
 "registered",21,90
-"Chi-sq p-value",0.0407414321682275
+"Chi-sq p-value (no correction)",0.0407414321682275
 "OR","0.95CI_low","0.95CI_up"
 1.98979591836735,1.02350686302251,3.868354907811
 ""
@@ -35,7 +35,7 @@
 "","male","female"
 "deregistered",56,21
 "registered",98,11
-"Chi-sq p-value",0.00222870417471698
+"Chi-sq p-value (no correction)",0.00222870417471698
 "OR","0.95CI_low","0.95CI_up"
 0.299319727891157,0.134497547621667,0.666125896636075
 ""
@@ -43,7 +43,7 @@
 "","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","R","S"
 "deregistered",2,0,8,0,7,4,1,8,2,1,11,11,5,1,1,2,2,4
 "registered",1,1,7,1,15,11,7,5,5,1,15,4,16,2,1,1,9,2
-"Chi-sq p-value",0.0995468765883396
+"Chi-sq p-value (no correction)",0.0995468765883396
 "V1","V2","V3"
 NA,NA,NA
 ""
@@ -51,7 +51,7 @@ NA,NA,NA
 "",">=3 directors","<3 directors"
 "deregistered",20,61
 "registered",53,58
-"Chi-sq p-value",0.00115321078022983
+"Chi-sq p-value (no correction)",0.00115321078022983
 "OR","0.95CI_low","0.95CI_up"
 0.358799876275905,0.191571620087714,0.672006381512357
 ""
@@ -59,7 +59,7 @@ NA,NA,NA
 "",">=5 hearings","<5 hearings"
 "deregistered",20,61
 "registered",32,80
-"Chi-sq p-value",0.548775658906227
+"Chi-sq p-value (no correction)",0.548775658906227
 "OR","0.95CI_low","0.95CI_up"
 0.819672131147541,0.427705214155688,1.57085389736537
 ""
@@ -67,7 +67,7 @@ NA,NA,NA
 "","minority holder","majority holder"
 "deregistered",51,31
 "registered",83,29
-"Chi-sq p-value",0.0761844116319046
+"Chi-sq p-value (no correction)",0.0761844116319046
 "OR","0.95CI_low","0.95CI_up"
 0.574815390594636,0.310828733302841,1.06300575803764
 ""
@@ -75,7 +75,7 @@ NA,NA,NA
 "","period1","period2"
 "deregistered",48,34
 "registered",44,68
-"Chi-sq p-value",0.00798724071069789
+"Chi-sq p-value (no correction)",0.00798724071069789
 "OR","0.95CI_low","0.95CI_up"
 2.18181818181818,1.22116234894633,3.89819632305223
 ""
@@ -83,7 +83,7 @@ NA,NA,NA
 "","judgment","settled"
 "recent share trade",4,39
 "no recent share trade",13,135
-"Chi-sq p-value",0.916284219230778
+"Chi-sq p-value (no correction)",0.916284219230778
 "OR","0.95CI_low","0.95CI_up"
 1.06508875739645,0.328613260066466,3.45212503263825
 ""
@@ -91,7 +91,7 @@ NA,NA,NA
 "","not-family","family"
 "recent share trade",32,10
 "no recent share trade",78,57
-"Chi-sq p-value",0.0316636539938484
+"Chi-sq p-value (no correction)",0.0316636539938484
 "OR","0.95CI_low","0.95CI_up"
 2.33846153846154,1.06349690336661,5.14190718332427
 ""
@@ -99,7 +99,7 @@ NA,NA,NA
 "","parallel order","no parallel order"
 "recent share trade",9,34
 "no recent share trade",38,110
-"Chi-sq p-value",0.524803863064191
+"Chi-sq p-value (no correction)",0.524803863064191
 "OR","0.95CI_low","0.95CI_up"
 0.76625386996904,0.336779036292876,1.7434131283989
 ""
@@ -107,7 +107,7 @@ NA,NA,NA
 "","male","female"
 "recent share trade",35,7
 "no recent share trade",117,25
-"Chi-sq p-value",0.887841154862241
+"Chi-sq p-value (no correction)",0.887841154862241
 "OR","0.95CI_low","0.95CI_up"
 1.06837606837607,0.426086129680309,2.67886547805514
 ""
@@ -115,7 +115,7 @@ NA,NA,NA
 "","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","R","S"
 "recent share trade",1,1,6,0,2,3,2,7,1,0,9,2,4,1,0,1,1,1
 "no recent share trade",2,0,9,1,20,12,6,6,6,2,17,13,17,2,2,2,10,5
-"Chi-sq p-value",0.22335219891358
+"Chi-sq p-value (no correction)",0.22335219891358
 "V1","V2","V3"
 NA,NA,NA
 ""
@@ -123,7 +123,7 @@ NA,NA,NA
 "",">=3 directors","<3 directors"
 "recent share trade",20,24
 "no recent share trade",53,95
-"Chi-sq p-value",0.247288912988707
+"Chi-sq p-value (no correction)",0.247288912988707
 "OR","0.95CI_low","0.95CI_up"
 1.4937106918239,0.755267956895156,2.95414575780653
 ""
@@ -131,7 +131,7 @@ NA,NA,NA
 "",">=5 hearings","<5 hearings"
 "recent share trade",13,30
 "no recent share trade",39,109
-"Chi-sq p-value",0.614743143113722
+"Chi-sq p-value (no correction)",0.614743143113722
 "OR","0.95CI_low","0.95CI_up"
 1.21111111111111,0.574084625350688,2.55500680332761
 ""
@@ -139,7 +139,7 @@ NA,NA,NA
 "","minority holder","majority holder"
 "recent share trade",34,10
 "no recent share trade",98,50
-"Chi-sq p-value",0.164773352312325
+"Chi-sq p-value (no correction)",0.164773352312325
 "OR","0.95CI_low","0.95CI_up"
 1.73469387755102,0.792777314595918,3.79572269969251
 ""
@@ -147,7 +147,7 @@ NA,NA,NA
 "","period1","period2"
 "recent share trade",21,23
 "no recent share trade",71,77
-"Chi-sq p-value",0.977149265318606
+"Chi-sq p-value (no correction)",0.977149265318606
 "OR","0.95CI_low","0.95CI_up"
 0.990202082057563,0.504797742326983,1.94236241784935
 ""
@@ -155,7 +155,7 @@ NA,NA,NA
 "","not-family","family"
 "judgment",12,1
 "settled",98,68
-"Chi-sq p-value",0.0176164517932528
+"Chi-sq p-value (no correction)",0.0176164517932528
 "OR","0.95CI_low","0.95CI_up"
 8.3265306122449,1.05773660090406,65.5466701042523
 ""
@@ -163,7 +163,7 @@ NA,NA,NA
 "","parallel order","no parallel order"
 "judgment",5,12
 "settled",42,133
-"Chi-sq p-value",0.620282312680534
+"Chi-sq p-value (no correction)",0.620282312680534
 "OR","0.95CI_low","0.95CI_up"
 1.31944444444444,0.439452629830256,3.96159568472207
 ""
@@ -171,7 +171,7 @@ NA,NA,NA
 "","male","female"
 "judgment",13,3
 "settled",142,29
-"Chi-sq p-value",0.855666036527482
+"Chi-sq p-value (no correction)",0.855666036527482
 "OR","0.95CI_low","0.95CI_up"
 0.884976525821596,0.237027804219393,3.30418388608261
 ""
@@ -179,7 +179,7 @@ NA,NA,NA
 "","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","R","S"
 "judgment",0,0,0,0,4,1,0,2,0,0,1,1,1,0,1,0,1,1
 "settled",3,1,15,1,19,14,8,11,7,2,24,14,20,3,1,3,10,5
-"Chi-sq p-value",0.622916964073163
+"Chi-sq p-value (no correction)",0.622916964073163
 "V1","V2","V3"
 NA,NA,NA
 ""
@@ -187,7 +187,7 @@ NA,NA,NA
 "",">=3 directors","<3 directors"
 "judgment",6,11
 "settled",66,108
-"Chi-sq p-value",0.830447621190118
+"Chi-sq p-value (no correction)",0.830447621190118
 "OR","0.95CI_low","0.95CI_up"
 0.892561983471074,0.315231713075233,2.52724221990852
 ""
@@ -195,7 +195,7 @@ NA,NA,NA
 "",">=5 hearings","<5 hearings"
 "judgment",9,8
 "settled",43,133
-"Chi-sq p-value",0.011403385361501
+"Chi-sq p-value (no correction)",0.011403385361501
 "OR","0.95CI_low","0.95CI_up"
 3.4796511627907,1.26414420657052,9.57799921225618
 ""
@@ -203,7 +203,7 @@ NA,NA,NA
 "","minority holder","majority holder"
 "judgment",11,6
 "settled",123,54
-"Chi-sq p-value",0.683436358216827
+"Chi-sq p-value (no correction)",0.683436358216827
 "OR","0.95CI_low","0.95CI_up"
 0.804878048780488,0.283094603405802,2.2883822779202
 ""
@@ -211,7 +211,7 @@ NA,NA,NA
 "","period1","period2"
 "judgment",6,11
 "settled",85,92
-"Chi-sq p-value",0.315138456290461
+"Chi-sq p-value (no correction)",0.315138456290461
 "OR","0.95CI_low","0.95CI_up"
 0.590374331550802,0.209191989664523,1.66613383195507
 ""
@@ -219,7 +219,7 @@ NA,NA,NA
 "","parallel order","no parallel order"
 "not-family",29,80
 "family",15,54
-"Chi-sq p-value",0.463382816327278
+"Chi-sq p-value (no correction)",0.463382816327278
 "OR","0.95CI_low","0.95CI_up"
 1.305,0.639966088831562,2.66111756500934
 ""
@@ -227,7 +227,7 @@ NA,NA,NA
 "","male","female"
 "not-family",92,14
 "family",52,17
-"Chi-sq p-value",0.0529330363384817
+"Chi-sq p-value (no correction)",0.0529330363384817
 "OR","0.95CI_low","0.95CI_up"
 2.14835164835165,0.980053912049003,4.70934787181837
 ""
@@ -235,7 +235,7 @@ NA,NA,NA
 "","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","R","S"
 "not-family",1,0,10,1,11,8,2,9,4,0,14,10,15,3,2,2,7,5
 "family",2,0,5,0,10,7,6,3,3,2,12,5,5,0,0,1,3,0
-"Chi-sq p-value",NA
+"Chi-sq p-value (no correction)",NA
 "V1","V2","V3"
 NA,NA,NA
 ""
@@ -243,7 +243,7 @@ NA,NA,NA
 "",">=3 directors","<3 directors"
 "not-family",47,63
 "family",24,43
-"Chi-sq p-value",0.363212370801396
+"Chi-sq p-value (no correction)",0.363212370801396
 "OR","0.95CI_low","0.95CI_up"
 1.33664021164021,0.71460573345917,2.50012975228343
 ""
@@ -251,7 +251,7 @@ NA,NA,NA
 "",">=5 hearings","<5 hearings"
 "not-family",34,77
 "family",12,56
-"Chi-sq p-value",0.0536759140904392
+"Chi-sq p-value (no correction)",0.0536759140904392
 "OR","0.95CI_low","0.95CI_up"
 2.06060606060606,0.980500234468874,4.330541888454
 ""
@@ -259,7 +259,7 @@ NA,NA,NA
 "","minority holder","majority holder"
 "not-family",81,30
 "family",41,28
-"Chi-sq p-value",0.0585301530990223
+"Chi-sq p-value (no correction)",0.0585301530990223
 "OR","0.95CI_low","0.95CI_up"
 1.84390243902439,0.974742490233355,3.48807632652408
 ""
@@ -267,7 +267,7 @@ NA,NA,NA
 "","period1","period2"
 "not-family",57,54
 "family",28,41
-"Chi-sq p-value",0.159294065299578
+"Chi-sq p-value (no correction)",0.159294065299578
 "OR","0.95CI_low","0.95CI_up"
 1.54563492063492,0.841671459374801,2.83838459921246
 ""
@@ -275,7 +275,7 @@ NA,NA,NA
 "","male","female"
 "parallel order",40,3
 "no parallel order",113,29
-"Chi-sq p-value",0.0411169435847739
+"Chi-sq p-value (no correction)",0.0411169435847739
 "OR","0.95CI_low","0.95CI_up"
 3.42182890855457,0.988078520851743,11.8501848105416
 ""
@@ -283,7 +283,7 @@ NA,NA,NA
 "","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","R","S"
 "parallel order",2,0,2,0,6,5,0,4,1,1,8,4,6,1,1,1,1,1
 "no parallel order",1,1,13,1,16,10,8,9,5,1,18,11,15,2,1,2,10,5
-"Chi-sq p-value",0.799925799941206
+"Chi-sq p-value (no correction)",0.799925799941206
 "V1","V2","V3"
 NA,NA,NA
 ""
@@ -291,7 +291,7 @@ NA,NA,NA
 "",">=3 directors","<3 directors"
 "parallel order",13,34
 "no parallel order",59,85
-"Chi-sq p-value",0.102006581976643
+"Chi-sq p-value (no correction)",0.102006581976643
 "OR","0.95CI_low","0.95CI_up"
 0.550847457627119,0.268054761393447,1.13198109221006
 ""
@@ -299,7 +299,7 @@ NA,NA,NA
 "",">=5 hearings","<5 hearings"
 "parallel order",9,38
 "no parallel order",42,103
-"Chi-sq p-value",0.185441111529152
+"Chi-sq p-value (no correction)",0.185441111529152
 "OR","0.95CI_low","0.95CI_up"
 0.580827067669173,0.258293325711604,1.30611227219184
 ""
@@ -307,7 +307,7 @@ NA,NA,NA
 "","minority holder","majority holder"
 "parallel order",28,19
 "no parallel order",105,41
-"Chi-sq p-value",0.111803333972145
+"Chi-sq p-value (no correction)",0.111803333972145
 "OR","0.95CI_low","0.95CI_up"
 0.575438596491228,0.289981659719715,1.14189834850884
 ""
@@ -315,7 +315,7 @@ NA,NA,NA
 "","period1","period2"
 "parallel order",25,22
 "no parallel order",67,79
-"Chi-sq p-value",0.383405600473815
+"Chi-sq p-value (no correction)",0.383405600473815
 "OR","0.95CI_low","0.95CI_up"
 1.33989145183175,0.693243652998717,2.58972310085487
 ""
@@ -323,7 +323,7 @@ NA,NA,NA
 "","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","R","S"
 "male",2,1,14,1,17,14,7,9,6,1,19,14,16,2,1,1,10,6
 "female",1,0,1,0,4,1,1,3,1,1,6,1,3,1,1,2,1,0
-"Chi-sq p-value",0.456630651359932
+"Chi-sq p-value (no correction)",0.456630651359932
 "V1","V2","V3"
 NA,NA,NA
 ""
@@ -331,7 +331,7 @@ NA,NA,NA
 "",">=3 directors","<3 directors"
 "male",61,91
 "female",8,24
-"Chi-sq p-value",0.108053880757734
+"Chi-sq p-value (no correction)",0.108053880757734
 "OR","0.95CI_low","0.95CI_up"
 2.01098901098901,0.848099578691796,4.76839855121329
 ""
@@ -339,7 +339,7 @@ NA,NA,NA
 "",">=5 hearings","<5 hearings"
 "male",43,112
 "female",8,23
-"Chi-sq p-value",0.825469057315275
+"Chi-sq p-value (no correction)",0.825469057315275
 "OR","0.95CI_low","0.95CI_up"
 1.10379464285714,0.4587639450695,2.65575058086911
 ""
@@ -347,7 +347,7 @@ NA,NA,NA
 "","minority holder","majority holder"
 "male",108,47
 "female",19,13
-"Chi-sq p-value",0.255688325163702
+"Chi-sq p-value (no correction)",0.255688325163702
 "OR","0.95CI_low","0.95CI_up"
 1.57222844344905,0.717693051422452,3.44423326029277
 ""
@@ -355,7 +355,7 @@ NA,NA,NA
 "","period1","period2"
 "male",71,84
 "female",13,19
-"Chi-sq p-value",0.591625747802639
+"Chi-sq p-value (no correction)",0.591625747802639
 "OR","0.95CI_low","0.95CI_up"
 1.23534798534799,0.570273835205598,2.67605587121691
 ""
@@ -379,7 +379,7 @@ NA,NA,NA
 "P",0,3
 "R",5,6
 "S",2,4
-"Chi-sq p-value",0.456550140211426
+"Chi-sq p-value (no correction)",0.456550140211426
 "V1","V2","V3"
 NA,NA,NA
 ""
@@ -403,7 +403,7 @@ NA,NA,NA
 "P",1,2
 "R",4,7
 "S",2,4
-"Chi-sq p-value",0.671332724559808
+"Chi-sq p-value (no correction)",0.671332724559808
 "V1","V2","V3"
 NA,NA,NA
 ""
@@ -427,7 +427,7 @@ NA,NA,NA
 "P",1,2
 "R",8,3
 "S",4,2
-"Chi-sq p-value",0.36052630292269
+"Chi-sq p-value (no correction)",0.36052630292269
 "V1","V2","V3"
 NA,NA,NA
 ""
@@ -451,7 +451,7 @@ NA,NA,NA
 "P",1,2
 "R",4,7
 "S",4,2
-"Chi-sq p-value",0.665370453344958
+"Chi-sq p-value (no correction)",0.665370453344958
 "V1","V2","V3"
 NA,NA,NA
 ""
@@ -459,7 +459,7 @@ NA,NA,NA
 "",">=5 hearings","<5 hearings"
 ">=3 directors",24,48
 "<3 directors",28,91
-"Chi-sq p-value",0.140162191250687
+"Chi-sq p-value (no correction)",0.140162191250687
 "OR","0.95CI_low","0.95CI_up"
 1.625,0.850287836522897,3.10556600550512
 ""
@@ -467,7 +467,7 @@ NA,NA,NA
 "","minority holder","majority holder"
 ">=3 directors",64,9
 "<3 directors",68,51
-"Chi-sq p-value",9.41310393160688e-06
+"Chi-sq p-value (no correction)",9.41310393160688e-06
 "OR","0.95CI_low","0.95CI_up"
 5.33333333333333,2.42886238321201,11.7110152642031
 ""
@@ -475,7 +475,7 @@ NA,NA,NA
 "","period1","period2"
 ">=3 directors",37,36
 "<3 directors",55,64
-"Chi-sq p-value",0.547582735069102
+"Chi-sq p-value (no correction)",0.547582735069102
 "OR","0.95CI_low","0.95CI_up"
 1.1959595959596,0.667318781157507,2.14338243663225
 ""
@@ -483,7 +483,7 @@ NA,NA,NA
 "","minority holder","majority holder"
 ">=5 hearings",43,10
 "<5 hearings",91,50
-"Chi-sq p-value",0.0258696212808817
+"Chi-sq p-value (no correction)",0.0258696212808817
 "OR","0.95CI_low","0.95CI_up"
 2.36263736263736,1.09419832683478,5.10150232405988
 ""
@@ -491,7 +491,7 @@ NA,NA,NA
 "","period1","period2"
 ">=5 hearings",26,27
 "<5 hearings",66,75
-"Chi-sq p-value",0.77991701078961
+"Chi-sq p-value (no correction)",0.77991701078961
 "OR","0.95CI_low","0.95CI_up"
 1.09427609427609,0.58162697324803,2.0587768889348
 ""
@@ -499,6 +499,6 @@ NA,NA,NA
 "","period1","period2"
 "minority holder",65,70
 "majority holder",27,33
-"Chi-sq p-value",0.684415203675697
+"Chi-sq p-value (no correction)",0.684415203675697
 "OR","0.95CI_low","0.95CI_up"
 1.13492063492063,0.616376497884627,2.08970467237015

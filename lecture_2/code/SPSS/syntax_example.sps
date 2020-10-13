@@ -17,54 +17,85 @@ execute.
  * execute.
  *  alter type grounds_no(f3).
 
+if(sh_change_precase EQ '') sh_change_precase='999'.
+execute.
+missing values sh_change_precase('999').
+execute.
+
+
+
 compute LOG_regdate_to_commencement_mths = LN(regdate_to_commencement_mths).
 execute.
+
+compute LOG_dur_mths = LN(dur_mths+.0001).
+execute.
+
+if(reg_binary EQ "deregistered") reg_binary_DUM = 0.
+if(reg_binary EQ "registered") reg_binary_DUM = 1.
+add value labels reg_binary_DUM 1'registered' 0'deregistered' .
+execute.
+
+if(family_context EQ "no") family_context_DUM = 0.
+if(family_context EQ "yes") family_context_DUM = 1.
+add value labels family_context_DUM 0'not-family' 1'family' .
+execute.
+
+*rel_s461 sh_change_precase disposition buscat
+*time_to_med reg_binary_DUM family_context_DUM
+
 ************************************************************************************************************************
 * summarize and explore data.
 ************************************************************************************************************************
 
-FREQUENCIES VARIABLES= Year time_to_med duration_mths family_context codeath birth2death_m grounds_no regdate_to_commencement_mths LOG_regdate_to_commencement_mths
-  /FORMAT=NOTABLE
+FREQUENCIES VARIABLES= year dur_mths LOG_dur_mths dh_no no_pl_affis no_dirs_case_start regdate_to_commencement_mths LOG_regdate_to_commencement_mths 
+   /FORMAT=NOTABLE
   /NTILES=10
   /STATISTICS=STDDEV MINIMUM MAXIMUM MEAN MEDIAN SKEWNESS SESKEW KURTOSIS SEKURT
   /ORDER=ANALYSIS.
 EXECUTE.
 
 
+
+
 CORRELATIONS
-  /VARIABLES=Year time_to_med duration_mths family_context birth2death_m regdate_to_commencement_mths
+  /VARIABLES=year dur_mths LOG_dur_mths dh_no no_pl_affis no_dirs_case_start regdate_to_commencement_mths LOG_regdate_to_commencement_mths 
   /PRINT=TWOTAIL NOSIG
   /MISSING=PAIRWISE.
 
 NONPAR CORR
-  /VARIABLES=Year time_to_med duration_mths family_context birth2death_m regdate_to_commencement_mths
+  /VARIABLES=year dur_mths LOG_dur_mths dh_no no_pl_affis no_dirs_case_start regdate_to_commencement_mths LOG_regdate_to_commencement_mths 
   /PRINT=SPEARMAN TWOTAIL NOSIG
   /MISSING=PAIRWISE.
 
 
 
-
-T-TEST GROUPS=family_context(0 1)
+T-TEST GROUPS=family_context("no" "yes")
   /MISSING=ANALYSIS
-  /VARIABLES= duration_mths time_to_med Year birth2death_m grounds_no regdate_to_commencement_mths LOG_regdate_to_commencement_mths
+  /VARIABLES=year dur_mths LOG_dur_mths dh_no no_pl_affis no_dirs_case_start regdate_to_commencement_mths LOG_regdate_to_commencement_mths 
+       /CRITERIA=CI(.95).
+EXECUTE.
+
+T-TEST GROUPS=family_context_DUM(0 1)
+  /MISSING=ANALYSIS
+  /VARIABLES= year dur_mths LOG_dur_mths dh_no no_pl_affis no_dirs_case_start regdate_to_commencement_mths LOG_regdate_to_commencement_mths 
   /CRITERIA=CI(.95).
 EXECUTE.
 
 
 NPAR TESTS
-  /M-W= duration_mths time_to_med Year birth2death_m  regdate_to_commencement_mths LOG_regdate_to_commencement_mths BY family_context(0 1)
+  /M-W=year dur_mths LOG_dur_mths dh_no no_pl_affis no_dirs_case_start regdate_to_commencement_mths LOG_regdate_to_commencement_mths  BY family_context_DUM(0 1)
   /MISSING ANALYSIS
   /METHOD=EXACT TIMER(5).
 
 
-T-TEST GROUPS=codeath(0 1)
+T-TEST GROUPS=reg_binary_DUM(0 1)
   /MISSING=ANALYSIS
-  /VARIABLES= duration_mths time_to_med Year birth2death_m grounds_no regdate_to_commencement_mths LOG_regdate_to_commencement_mths
+  /VARIABLES= year dur_mths LOG_dur_mths dh_no no_pl_affis no_dirs_case_start regdate_to_commencement_mths LOG_regdate_to_commencement_mths
   /CRITERIA=CI(.95).
 EXECUTE.
 
 
-EXAMINE  VARIABLES=regdate_to_commencement_mths BY codeath
+EXAMINE  VARIABLES=regdate_to_commencement_mths BY reg_binary_DUM
   /PLOT BOXPLOT STEMLEAF
   /COMPARE GROUP
   /STATISTICS DESCRIPTIVES
@@ -75,15 +106,36 @@ EXAMINE  VARIABLES=regdate_to_commencement_mths BY codeath
 
 
 NPAR TESTS
-  /M-W= duration_mths time_to_med Year birth2death_m  regdate_to_commencement_mths BY codeath(0 1)
+  /M-W= year dur_mths LOG_dur_mths dh_no no_pl_affis no_dirs_case_start regdate_to_commencement_mths LOG_regdate_to_commencement_mths BY reg_binary_DUM(0 1)
   /MISSING ANALYSIS
   /METHOD=EXACT TIMER(5).
 
 
 GRAPH
-/SCATTERPLOT(BIVAR)= duration_mths  WITH time_to_med
+/SCATTERPLOT(BIVAR)= dur_mths  WITH time_to_med
 /MISSING=LISTWISE.
 EXECUTE.
+
+
+
+CROSSTABS
+  /TABLES=  reg_binary_DUM family_context_DUM BY gender_pl
+  /FORMAT=AVALUE TABLES
+  /STATISTICS=CHISQ PHI ETA CORR RISK
+  /CELLS=COUNT
+  /COUNT ROUND CELL
+  /METHOD=EXACT TIMER(5).
+
+
+CROSSTABS
+  /TABLES=    sh_change_precase BY  reg_binary_DUM 
+  /FORMAT=AVALUE TABLES
+  /STATISTICS=CHISQ PHI ETA CORR RISK
+  /CELLS=COUNT
+  /COUNT ROUND CELL
+  /METHOD=EXACT TIMER(5).
+	
+
 
 
 * Chart Builder.
@@ -116,15 +168,8 @@ END GPL.
     color.interior(codeath), shape.interior(shape.square))
 END GPL.
 
-  CROSSTABS
-  /TABLES=  codeath BY gender_pl
-  /FORMAT=AVALUE TABLES
-  /STATISTICS=CHISQ PHI ETA CORR RISK
-  /CELLS=COUNT
-  /COUNT ROUND CELL
-  /METHOD=EXACT TIMER(5).
-
- CROSSTABS
+ 
+ *  CROSSTABS
   /TABLES= DUM_recent codeath BY family_context
   /FORMAT=AVALUE TABLES
   /STATISTICS=CHISQ PHI ETA CORR RISK
@@ -132,7 +177,7 @@ END GPL.
   /COUNT ROUND CELL
   /METHOD=EXACT TIMER(5).
 
- CROSSTABS
+ *  CROSSTABS
   /TABLES=DUM_recent codeath dirs_no gender_pl BY family_context
   /FORMAT=AVALUE TABLES
   /STATISTICS=CHISQ PHI ETA CORR RISK
@@ -141,7 +186,7 @@ END GPL.
   /METHOD=EXACT TIMER(5).
 
 
- CROSSTABS
+ *  CROSSTABS
   /TABLES=DUM_recent  dirs_no gender_pl BY codeath
   /FORMAT=AVALUE TABLES
   /STATISTICS=CHISQ PHI ETA CORR RISK
@@ -162,13 +207,13 @@ LOGISTIC REGRESSION VARIABLES codeath
 
 
 * same factors should show up as significant (but weird subtle things can block this!).
-LOGISTIC REGRESSION VARIABLES codeath
+ * LOGISTIC REGRESSION VARIABLES codeath
   /METHOD=BSTEP(LR) LOG_regdate_to_commencement_mths family_context DUM_recent
   /CLASSPLOT
   /PRINT=GOODFIT CI(95)
   /CRITERIA=PIN(0.05) POUT(0.10) ITERATE(30) CUT(0.5).
 
-LOGISTIC REGRESSION VARIABLES codeath
+ * LOGISTIC REGRESSION VARIABLES codeath
   /METHOD=BSTEP(LR) LOG_regdate_to_commencement_mths family_context DUM_recent gender_pl 
   /CLASSPLOT
   /PRINT=GOODFIT CI(95)
