@@ -32,7 +32,8 @@ execute.
 
 if(reg_binary EQ "deregistered") reg_binary_DUM = 0.
 if(reg_binary EQ "registered") reg_binary_DUM = 1.
-add value labels reg_binary_DUM 1'registered' 0'deregistered' .
+execute.
+add value labels reg_binary_DUM 0'deregistered' . 1'registered'.
 execute.
 
 if(family_context EQ "no") family_context_DUM = 0.
@@ -42,6 +43,10 @@ execute.
 
 *rel_s461 sh_change_precase disposition buscat
 *time_to_med reg_binary_DUM family_context_DUM
+
+COMPUTE test=EXP(LOG_regdate_to_commencement_mths)-regdate_to_commencement_mths.
+EXECUTE.
+
 
 ************************************************************************************************************************
 * summarize and explore data.
@@ -128,7 +133,7 @@ CROSSTABS
 
 
 CROSSTABS
-  /TABLES=    sh_change_precase BY  reg_binary_DUM 
+  /TABLES=    reg_binary_DUM BY  sh_change_precase  
   /FORMAT=AVALUE TABLES
   /STATISTICS=CHISQ PHI ETA CORR RISK
   /CELLS=COUNT
