@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1602674715905.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2255889565",
+    "id" : "AF68AC84",
+    "lastKnownWriteTime" : 1602038862,
+    "last_content_update" : 1602038862,
+    "path" : "~/111_courses/law/notes_part_2/code/Rcode/spiegelhater_ch7_regression.R",
+    "project_path" : "spiegelhater_ch7_regression.R",
+    "properties" : {
+        "cursorPosition" : "12,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

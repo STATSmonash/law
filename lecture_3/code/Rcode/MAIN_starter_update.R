@@ -5,7 +5,6 @@ function_files<-paste0("source('functions//",list.files(path="functions//",patte
 for(i in function_files){ eval(parse(text=i)) }
 colour_p<-c("#E768AD")
 
-
 # read in raw file, formated with columns set by a tab
 temp<-read.csv(file="law_data_input_TAB_update.txt",check.names = FALSE,sep="\t")  # upload from clean file tab delimited (\t)
 
@@ -21,7 +20,7 @@ names(temp)
 # restrict main variable to a subset of columns (can always expand or work with main table)
 columns_of_interest<-c("year","dur_mths","reg_binary","gender_pl","family_context","dh_5_bin","dirs_bin","rel_s461"
                        ,"regdate_to_commencement_mths","dh_no","no_pl_affis","no_dirs_case_start"
-                        ,"sh_change_precase", "time_to_med","disposition","buscat","majsh")
+                        ,"sh_change_precase", "time_to_med","disposition","buscat","majsh","plaintiff_dir")
 
 x<-temp[colnames(temp)%in%columns_of_interest]
 #View(x)
@@ -41,6 +40,7 @@ x$sh_change_precase<-factor(x$sh_change_precase,levels=c("yes","no"),labels=c("r
 x$disposition<-factor(x$disposition)
 x$buscat<-factor(x$buscat)
 x$majsh<-factor(x$majsh,levels=c(0,1),labels=c("minority holder","majority holder"))
+x$plaintiff_dir<-factor(x$plaintiff_dir,levels=c("yes","no"),labels=c("plaintiff director","plaintiff not-director"))
 
 # make any new variables or transformations
 x$period<- x$year<=2012
@@ -51,10 +51,10 @@ View(x)
 
 x$LOG_regdate_to_commencement_mths<-log(x$regdate_to_commencement_mths)
 x$LOG_dur_mths<-log(x$dur_mths)
-x$LOG_dur_mths[is.infinite(x$LOG_dur_mths)]<-0
+x$LOG_dur_mths[is.infinite(x$LOG_dur_mths)]<-0 #cannot take log of zero so set back to zero
 x$LOG_time_to_med<-log(x$time_to_med)
 x$LOG_time_to_med[is.infinite(x$LOG_time_to_med)]<-0
-x$LOG_time_to_med[is.na(x$LOG_time_to_med)]<-0
+#x$LOG_time_to_med[is.na(x$LOG_time_to_med)]<-0
 x$LOG_time_to_med[is.na(x$time_to_med)]<-NA
 
 
@@ -73,7 +73,7 @@ cbind(x_nums,x_facts,x_facts_two)
 x_sum<-fsum_grid(x[,x_nums])
 write.table(x_sum$table,"data_summary_statistics.CSV",sep=",",col.names = NA)
 #write(rbind("",x_sum$blurb),file="data_summary.CSV",append=TRUE)
-write.table(c("",x_sum$blur),file=paste0("data_summary.CSV") , append = TRUE,  sep=',', row.names=F, col.names=F )
+write.table(c("",x_sum$blur),file=paste0("data_summary_statistics.CSV") , append = TRUE,  sep=',', row.names=F, col.names=F )
 
 x_cor<-cor(x[,x_nums],use="pairwise.complete.obs")
 x_cor_spearman<-cor(x[,x_nums],use="pairwise.complete.obs",method="spearman")
@@ -292,22 +292,29 @@ dev.off()
 ############################################################################################
 ##  MODELS - continuous y-variable
 ############################################################################################
+#use_cols_reg<-c("LOG_dur_mths","dur_mths","dh_no","no_pl_affis","regdate_to_commencement_mths","LOG_regdate_to_commencement_mths"
+                #,"family_context","dh_5_bin","dirs_bin","no_dirs_case_start"
+                #,"majsh","year","gender_pl") 
+
 use_cols_reg<-c("LOG_dur_mths","dur_mths","dh_no","no_pl_affis","regdate_to_commencement_mths","LOG_regdate_to_commencement_mths"
-                ,"family_context","dh_5_bin","dirs_bin","no_dirs_case_start"
-                ,"majsh","year","gender_pl") #,"LOG_time_to_med"
+                ,"year","gender_pl") 
 x_missing<-apply(x[,colnames(x)%in%use_cols_reg],1,function(i){any(is.na(i))})
+#x[x_missing,colnames(x)%in%use_cols_reg]
+  
 x_no_na<-x[!x_missing,colnames(x)%in%use_cols_reg]
 x_no_na<-cbind(x_no_na, RANK_dh_no=rank(x_no_na$dh_no),RANK_no_pl_affis=rank(x_no_na$no_pl_affis))
-#x_no_na<-x_no_na[!x_no_na$dur_mths==0,]
+#x_no_na<-x_no_na[!x_no_na$LOG_dur_mths==0,]
+str(x_no_na)
 
 #mod0<-lm(LOG_dur_mths ~ poly(dh_no,1), data = x_no_na)
 mod1<-lm(LOG_dur_mths ~ RANK_dh_no, data = x_no_na)
 #mod2<-lm(LOG_dur_mths ~ log(dh_no+.01)+log(no_pl_affis+.01), data = x_no_na)
 mod2<-update(mod1,~.+RANK_no_pl_affis) #LOG_time_to_med
-mod3<-update(mod2,~.+LOG_regdate_to_commencement_mths)
-mod4<-update(mod3,~.+LOG_regdate_to_commencement_mths*family_context*gender_pl+RANK_no_pl_affis*gender_pl+RANK_dh_no*gender_pl) #+LOG_time_to_med 
+mod3<-update(mod2,~.+LOG_regdate_to_commencement_mths+gender_pl)
+mod4<-update(mod3,~.+LOG_regdate_to_commencement_mths*gender_pl+RANK_no_pl_affis*gender_pl+RANK_dh_no*gender_pl) #+LOG_time_to_med 
 anova(mod1,mod2,mod3,mod4)
 
+summary(mod3)
 summary(mod4)
 anova(mod4)
 
@@ -323,37 +330,41 @@ qqnorm(res);qqline(res)
 ##  MODELS - binary y-variable
 ############################################################################################
 
-use_cols_reg<-c("reg_binary","no_dirs_case_start","LOG_regdate_to_commencement_mths","year","gender_pl","rel_s461","majsh","time_to_med")
+use_cols_reg<-c("reg_binary","no_dirs_case_start","LOG_regdate_to_commencement_mths","year","gender_pl","rel_s461","majsh")
+#use_cols_reg<-c("reg_binary","gender_pl")
 x_missing<-apply(x[,colnames(x)%in%use_cols_reg],1,function(i){any(is.na(i))})
 x_no_na<-x[!x_missing,colnames(x)%in%use_cols_reg]
       
 mod1<-glm(reg_binary ~ no_dirs_case_start, family = binomial(link = "logit"), data = x_no_na)
-mod2<-glm(reg_binary ~ no_dirs_case_start+LOG_regdate_to_commencement_mths, family = binomial(link = "logit"), data = x_no_na)
-mod3<-glm(reg_binary ~ no_dirs_case_start+LOG_regdate_to_commencement_mths+gender_pl, family = binomial(link = "logit"), data = x_no_na)
+mod2<-glm(reg_binary ~ 1, family = binomial(link = "logit"), data = x_no_na)
+mod3<-glm(reg_binary ~ gender_pl, family = binomial(link = "logit"), data = x_no_na)
 mod4<-glm(reg_binary ~ no_dirs_case_start+LOG_regdate_to_commencement_mths+gender_pl+year, family = binomial(link = "logit"), data = x_no_na)
-mod5<-glm(reg_binary ~ no_dirs_case_start+LOG_regdate_to_commencement_mths+year+gender_pl+rel_s461, family = binomial(link = "logit"), data = x_no_na)
-mod6<-update(mod5,~.+rank(time_to_med))
+mod5<-glm(reg_binary ~ no_dirs_case_start+LOG_regdate_to_commencement_mths+gender_pl+year+rel_s461, family = binomial(link = "logit"), data = x_no_na)
+mod6<-update(mod5,~.+LOG_regdate_to_commencement_mths*gender_pl)
   
 anova(mod1,mod2,mod3,mod4,mod5,mod6,test="LRT")
-summary.glm(mod4)
+summary.glm(mod5)
+#summary.glm(mod5)
+#anova(mod2,mod3,test="LRT")
+
 #exp(-1.38450+c(-1,1)*qnorm(.975)*0.45419)
 
-y_fit<-predict(mod4,type='response')
+y_fit<-predict(mod5,type='response')
 
 data_box<-split(y_fit,x_no_na$reg_binary)
 boxplot(data_box,outline=FALSE,names=NA,axes=FALSE)
 stripchart(data_box, jitter = .1 , method = "jitter",vertical = TRUE,col=0,xlab=NULL,cex.axis=1,axes=TRUE)
 boxplot(data_box,outline=FALSE,add=TRUE,names=NA,axes=FALSE,boxwex=0.25)
 stripchart(data_box,jitter = .1 , method = "jitter",pch=16,cex=1.5, col=adjustcolor(colour_p, alpha.f = 0.3),vertical = TRUE,add=TRUE,axes=FALSE)
-out_roc<-froc(x_no_na$reg_binary,y_fit)
+#out_roc<-froc(x_no_na$reg_binary,y_fit)
 
-xx<-table(data.frame(x_no_na$reg_binary,y_fit>.25))
+xx<-table(data.frame(x_no_na$reg_binary,y_fit>.5))
 1-xx[2,2]/(xx[2,1]+xx[2,2]) # 1- sensitivity
 xx[1,1]/(xx[1,1]+xx[1,2]) # specificity
 
 #page 177 in hosmer 2013 and chapter 6 in Spegielhalter.
-y_fit1<-predict(mod2,type='response')
-out_roc1<-froc(x_no_na$reg_binary,y_fit1)
+y_fit1<-predict(mod6,type='response')
+out_roc<-froc(x_no_na$reg_binary,y_fit)
 out_roc1<-froc(x_no_na$reg_binary,y_fit1)
 
 plot(out_roc$roc)

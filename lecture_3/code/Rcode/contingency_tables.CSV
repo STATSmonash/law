@@ -7,6 +7,14 @@
 "OR","0.95CI_low","0.95CI_up"
 0.934065934065934,0.471505233978142,1.85041247966913
 ""
+"reg_binary vs plaintiff_dir"
+"","plaintiff director","plaintiff not-director"
+"deregistered",60,21
+"registered",90,21
+"Chi-sq p-value (no correction)",0.246093501064075
+"OR","0.95CI_low","0.95CI_up"
+0.666666666666667,0.335244419378842,1.32573256631068
+""
 "reg_binary vs disposition"
 "","judgment","settled"
 "deregistered",5,77
@@ -79,6 +87,14 @@ NA,NA,NA
 "OR","0.95CI_low","0.95CI_up"
 2.18181818181818,1.22116234894633,3.89819632305223
 ""
+"sh_change_precase vs plaintiff_dir"
+"","plaintiff director","plaintiff not-director"
+"recent share trade",29,15
+"no recent share trade",121,27
+"Chi-sq p-value (no correction)",0.0255780756360272
+"OR","0.95CI_low","0.95CI_up"
+0.431404958677686,0.20376969940708,0.913336177622242
+""
 "sh_change_precase vs disposition"
 "","judgment","settled"
 "recent share trade",4,39
@@ -150,6 +166,78 @@ NA,NA,NA
 "Chi-sq p-value (no correction)",0.977149265318606
 "OR","0.95CI_low","0.95CI_up"
 0.990202082057563,0.504797742326983,1.94236241784935
+""
+"plaintiff_dir vs disposition"
+"","judgment","settled"
+"plaintiff director",14,136
+"plaintiff not-director",3,38
+"Chi-sq p-value (no correction)",0.687836810135649
+"OR","0.95CI_low","0.95CI_up"
+1.30392156862745,0.356152561491059,4.77382908609111
+""
+"plaintiff_dir vs family_context"
+"","not-family","family"
+"plaintiff director",81,59
+"plaintiff not-director",29,8
+"Chi-sq p-value (no correction)",0.0220868617768114
+"OR","0.95CI_low","0.95CI_up"
+0.378725891291642,0.161618222692876,0.887482230312705
+""
+"plaintiff_dir vs rel_s461"
+"","parallel order","no parallel order"
+"plaintiff director",38,111
+"plaintiff not-director",9,33
+"Chi-sq p-value (no correction)",0.588154020334431
+"OR","0.95CI_low","0.95CI_up"
+1.25525525525525,0.550660728806752,2.86140934593303
+""
+"plaintiff_dir vs gender_pl"
+"","male","female"
+"plaintiff director",128,20
+"plaintiff not-director",24,12
+"Chi-sq p-value (no correction)",0.00489589749185893
+"OR","0.95CI_low","0.95CI_up"
+3.2,1.38422064675739,7.39766454429624
+""
+"plaintiff_dir vs buscat"
+"","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","R","S"
+"plaintiff director",1,1,12,1,15,12,6,9,7,2,19,14,18,3,1,2,11,2
+"plaintiff not-director",2,0,3,0,7,3,2,4,0,0,7,1,3,0,1,1,0,4
+"Chi-sq p-value (no correction)",0.123360098004769
+"V1","V2","V3"
+NA,NA,NA
+""
+"plaintiff_dir vs dirs_bin"
+"",">=3 directors","<3 directors"
+"plaintiff director",60,90
+"plaintiff not-director",13,29
+"Chi-sq p-value (no correction)",0.285687982783303
+"OR","0.95CI_low","0.95CI_up"
+1.48717948717949,0.715818473221706,3.0897537711386
+""
+"plaintiff_dir vs dh_5_bin"
+"",">=5 hearings","<5 hearings"
+"plaintiff director",37,112
+"plaintiff not-director",15,27
+"Chi-sq p-value (no correction)",0.161697823499535
+"OR","0.95CI_low","0.95CI_up"
+0.594642857142857,0.285860086345827,1.23696921830228
+""
+"plaintiff_dir vs majsh"
+"","minority holder","majority holder"
+"plaintiff director",99,51
+"plaintiff not-director",33,9
+"Chi-sq p-value (no correction)",0.120276684914898
+"OR","0.95CI_low","0.95CI_up"
+0.529411764705882,0.235329794898668,1.19099588188432
+""
+"plaintiff_dir vs period"
+"","period1","period2"
+"plaintiff director",71,79
+"plaintiff not-director",21,21
+"Chi-sq p-value (no correction)",0.75977932433589
+"OR","0.95CI_low","0.95CI_up"
+0.89873417721519,0.453255099870208,1.78204971444548
 ""
 "disposition vs family_context"
 "","not-family","family"
