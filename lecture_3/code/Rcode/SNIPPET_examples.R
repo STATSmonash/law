@@ -14,7 +14,7 @@ qqplot(jitter(x,2),jitter(y,2))
 
 
 ## correlations
-n<-30
+n<-300
 x<-rnorm(n)
 y<- -.5*x+rnorm(n,10,.5)
 

@@ -1,20 +1,5 @@
 froc<- function(grp, pred){
-  # Produces x and y co-ordinates for ROC curve plot
-  # Arguments: grp - labels classifying subject status
-  #            pred - values of each observation
-  # Output: List with 2 components:
-  #         roc = data.frame with x and y co-ordinates of plot
-  #         stats = data.frame containing: area under ROC curve, p value, upper and lower 95% confidence interval
-  
-  grp <- as.factor(grp)
-  if (length(pred) != length(grp)) {
-    stop("The number of classifiers must match the number of data points")
-  } 
-  
-  if (length(levels(grp)) != 2) {
-    stop("There must only be 2 values for the classifier")
-  }
-  
+
   cut <- unique(pred)
   tp <- sapply(cut, function(x) length(which(pred > x & grp == levels(grp)[2])))
   fn <- sapply(cut, function(x) length(which(pred < x & grp == levels(grp)[2])))
@@ -40,11 +25,7 @@ froc<- function(grp, pred){
   z <- (auc - 0.5)/se.auc.null
   p <- 2*pnorm(-abs(z))
   
-  stats <- data.frame (auc = auc,
-                       p.value = p,
-                       ci.upper = ci.upper,
-                       ci.lower = ci.lower
-  )
+  stats <- data.frame (auc = auc,p.value = p,ci.upper = ci.upper,ci.lower = ci.lower  )
   
   return (list(roc = roc_out, stats = stats))
 }

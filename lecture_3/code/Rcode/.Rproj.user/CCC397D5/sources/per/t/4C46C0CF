@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1602558291576.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1217517490",
+    "id" : "4C46C0CF",
+    "lastKnownWriteTime" : 1603277515,
+    "last_content_update" : 1603277515505,
+    "path" : "~/111_courses/law/notes_part_3/code/Rcode/MAIN_starter_update.R",
+    "project_path" : "MAIN_starter_update.R",
+    "properties" : {
+        "cursorPosition" : "375,0",
+        "scrollLine" : "354",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

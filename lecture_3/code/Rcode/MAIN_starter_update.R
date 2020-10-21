@@ -349,16 +349,18 @@ summary.glm(mod5)
 
 #exp(-1.38450+c(-1,1)*qnorm(.975)*0.45419)
 
+par(mfrow=c(1,2))
 y_fit<-predict(mod5,type='response')
 
 data_box<-split(y_fit,x_no_na$reg_binary)
-boxplot(data_box,outline=FALSE,names=NA,axes=FALSE)
-stripchart(data_box, jitter = .1 , method = "jitter",vertical = TRUE,col=0,xlab=NULL,cex.axis=1,axes=TRUE)
+#boxplot(data_box,outline=FALSE,names=NA,axes=FALSE)
+stripchart(data_box, jitter = .1 , method = "jitter",vertical = TRUE,col=0,xlab=NULL,cex.axis=1,axes=TRUE,main="model predictions",cex.main=1)
+title(ylab=expression(hat(p)),line=2.5)
 boxplot(data_box,outline=FALSE,add=TRUE,names=NA,axes=FALSE,boxwex=0.25)
 stripchart(data_box,jitter = .1 , method = "jitter",pch=16,cex=1.5, col=adjustcolor(colour_p, alpha.f = 0.3),vertical = TRUE,add=TRUE,axes=FALSE)
 #out_roc<-froc(x_no_na$reg_binary,y_fit)
 
-xx<-table(data.frame(x_no_na$reg_binary,y_fit>.5))
+xx<-table(data.frame(x_no_na$reg_binary,y_fit>.25))
 1-xx[2,2]/(xx[2,1]+xx[2,2]) # 1- sensitivity
 xx[1,1]/(xx[1,1]+xx[1,2]) # specificity
 
@@ -367,7 +369,7 @@ y_fit1<-predict(mod6,type='response')
 out_roc<-froc(x_no_na$reg_binary,y_fit)
 out_roc1<-froc(x_no_na$reg_binary,y_fit1)
 
-plot(out_roc$roc)
+plot(out_roc$roc,main="ROC curve",xlab="1-specificity",ylab="sensitivity",cex.main=1)
 points(out_roc1$roc,col=2)
 
 
